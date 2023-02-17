@@ -2,9 +2,11 @@
   "name": "asit_editor_v3",
   "packageManager": "yarn@3.3.0",
   "dependencies": {
+    "copyfiles": "^2.4.1",
     "gh-pages": "^5.0.0"
   },
   "scripts": {
+    "copy": "copyfiles editor.js, index.html dest",
     "deploy": "gh-pages -d dist"
   },
   "homepage": "https://chetmurphy.github.io/asit_editor_v3"
