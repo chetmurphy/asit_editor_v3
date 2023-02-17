@@ -1,0 +1,7 @@
+{
+  "name": "asit_editor_v3",
+  "packageManager": "yarn@3.3.0",
+  "dependencies": {
+    "gh-pages": "^5.0.0"
+  }
+}
