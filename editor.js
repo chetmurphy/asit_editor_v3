@@ -166,54 +166,18 @@ window.fusionJavaScriptHandler =
 
 var _result = ""
 
-function pending(callback, count) {
-    backdoor("pending", "", count);
-}
-
-function backdoor(cmd, selector, _data) {
-    var args = {
-        selector: "",
-        data: ""
-    };
-    if (cmd == 'backdoor') {
-        adsk.fusionSendData(cmd, JSON.stringify(args))
-            .then((result) => {
-                if (result.length > 0) {
-                    alert("backdoor received 0");
-                }
-                return "OK";
-            })
-        return;
-    }
-}
-
 function sendToFusion(cmd, selector, _data) {
     
     // console.log(window);
     var args = {
         selector: selector,
-        data: _data
+        data: encode(_data)
     };
 
     try {
         if (cmd == 'autosave') {
             adsk.fusionSendData(cmd, JSON.stringify(args));   
-            return;
-        }
-
-        if (cmd == 'pending') {
-            adsk.fusionSendData(cmd, JSON.stringify(args))
-                .then((result) => {
-                    var r = JSON.parse(result);
-                    if (r.status == 'pending') {
-                        setTimeout(pending, 1000);
-                    }
-                    else {
-                        editor.setValue(decode(r.data))
-                    }
-                    return "OK";   
-                });
-            return;
+            return "OK";
         }
 
         if (cmd == 'file') {
@@ -221,37 +185,19 @@ function sendToFusion(cmd, selector, _data) {
                 .then((result) => {
                     if (result.length > 0) {
                         var r = JSON.parse(result);
-                        if (r.status == 'pending') {
-                            setTimeout(pending, 1000);
-                        }
-                        else if (r.status == 'OK') {
-                            alert("data received " + r.data.length)
-                            editor.setValue(r.data)
+                        if (r.status == 'OK') {
+                            editor.setValue(decode(r.data))
                             
                         }
 
                     } 
                     return "OK";
-                });
-            return;        
+                });       
         }
 
         if (cmd == 'commit') {
-            adsk.fusionSendData(cmd, JSON.stringify(args))
-                .then((result) => {
-                    if (result.length > 0) {
-                        var r = JSON.parse(result);
-                        if (r.status == 'pending') {
-                            setTimeout(pending, 1000);
-                        }
-                        else if (r.status == 'OK') {
-                            // TBD any work?
-                            //editor.setValue(decode(r.data))
-                        }
-                    }
-                    return "OK";
-                });
-            return;
+            adsk.fusionSendData(cmd, JSON.stringify(args));
+                return "OK";
         }
 
        
@@ -271,7 +217,7 @@ function sendToFusion(cmd, selector, _data) {
         console.log(`sendToFusion error ${error}`);
     }
 
-    return
+    return 'OK'
 }
 
 function handleCmd_2(cmd, data) {
