@@ -6,7 +6,8 @@
     "gh-pages": "^5.0.0"
   },
   "scripts": {
-    "copy": "copyfiles editor.js, index.html dest",
+    "copy_js": "copyfiles editor.js dist",
+    "copy_html": "copyfiles index.html dist",
     "deploy": "gh-pages -d dist"
   },
   "homepage": "https://chetmurphy.github.io/asit_editor_v3"
